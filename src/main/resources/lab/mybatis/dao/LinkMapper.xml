@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="lab.mybatis.dao.LinkMapper">
+    
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        INSERT INTO links (
+            customer_id,
+            url
+        ) VALUES (
+            #{customerId},
+            #{url}
+        )   
+    </insert>
+
+
+        
+    <resultMap id="link" type="lab.mybatis.domain.Link" autoMapping="true">
+        <id property="id" column="id" />
+        <result property="customerId" column="customer_id"/>
+    </resultMap>
+
+    <select id="get" resultMap="link">
+        SELECT * FROM links WHERE id = #{id}
+    </select>
+    
+    <select id="findByCustomer" resultMap="link">
+        SELECT * FROM links WHERE customer_id = #{id}
+    </select>
+    
+    
+    
+    <resultMap id="linkExt" type="lab.mybatis.domain.LinkExt" extends="link" autoMapping="true">
+        <!-- Auto mapping must be inherited -->
+        <!-- mind notNullColumn="login" -->
+        <association property="customer" javaType="lab.mybatis.domain.Customer" 
+                     columnPrefix="customer_" autoMapping="true">
+        </association>
+    </resultMap>
+    
+    <select id="getExt" resultMap="linkExt">
+        SELECT 
+            l.*, 
+            c.enabled customer_enabled,
+            c.login customer_login,
+            c.name customer_name,
+            c.email customer_email,
+            c.balance customer_balance
+        FROM links l 
+        LEFT JOIN customers c ON c.id = l.customer_id
+        WHERE l.id = #{id}
+    </select>
+</mapper>

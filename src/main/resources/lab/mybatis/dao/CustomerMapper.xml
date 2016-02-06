@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="lab.mybatis.dao.CustomerMapper">
+    
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        INSERT INTO customers (
+            enabled,
+            login,
+            name,
+            email,
+            balance
+        ) VALUES (
+            #{enabled},
+            #{login},
+            #{name},
+            #{email},
+            #{balance}
+        )   
+    </insert>
+
+    <update id="update">
+        UPDATE customers 
+        SET 
+            enabled = #{enabled},
+            login = #{login},
+            name = #{name},
+            email = #{email},
+            balance = #{balance}
+        WHERE id = #{id}
+    </update>
+
+        
+    
+    <resultMap id="customerBase" type="lab.mybatis.domain.CustomerBase" autoMapping="true">
+        <!--
+        The only difference between the two is that id will flag the result as an identifier 
+        property to be used when comparing object instances. This helps to improve general 
+        performance, but especially performance of caching and nested result mapping (i.e. join mapping).
+        -->
+        <id property="id" column="id" />
+    </resultMap>
+    
+    <select id="getBase" resultMap="customerBase">
+        SELECT id, login, enabled FROM customers WHERE id = #{id}
+    </select>
+    
+    
+    
+    <resultMap id="customer" type="lab.mybatis.domain.Customer" extends="customerBase" autoMapping="true">
+    </resultMap>
+    
+    <select id="get" resultMap="customer">
+        SELECT * FROM customers WHERE id = #{id}
+    </select>
+    
+    
+    
+    <resultMap id="customerExt" type="lab.mybatis.domain.CustomerExt" extends="customer" autoMapping="true">
+        <collection property="links" ofType="lab.mybatis.domain.Link" columnPrefix="link_" autoMapping="true">
+            <!-- Without ID there will be only one link -->
+            <!-- mind prefix -->
+            <id property="id" column="id" />
+            <result property="customerId" column="customer_id"/>
+        </collection>
+    </resultMap>
+    
+    <select id="getExt" resultMap="customerExt">
+        SELECT 
+            c.*, 
+            l.id link_id, 
+            l.customer_id link_customer_id, 
+            l.url link_url 
+        FROM customers c
+        LEFT JOIN links l ON l.customer_id = c.id
+        WHERE c.id = #{id}
+    </select>
+    
+    
+
+    <resultMap id="customerExtExt" type="lab.mybatis.domain.CustomerExtExt" extends="customer" autoMapping="true">
+        <collection property="links" ofType="lab.mybatis.domain.LinkExt" autoMapping="true">
+            <id property="id" column="link_id" />
+            <result property="url" column="link_url" />
+            <result property="customerId" column="link_customer_id"/>
+            <!-- columnPrefix="link_" DOES NOT ALLOW TO CREATE CUSTOMER INSTANCE HERE -->
+            <association property="customer" resultMap="customer"/>
+        </collection>
+    </resultMap>
+
+    <select id="getExtExt" resultMap="customerExtExt">
+        SELECT 
+            c.*, 
+            l.id link_id, 
+            l.customer_id link_customer_id, 
+            l.url link_url 
+        FROM customers c
+        LEFT JOIN links l ON l.customer_id = c.id
+        WHERE c.id = #{id}
+    </select>
+
+    
+    
+    <select id="find" resultMap="customer">
+        SELECT * FROM customers
+        WHERE
+            <if test="email != null">
+                <bind name="emailp" value="'%' + email + '%'" />
+                email LIKE #{emailp} AND
+            </if>
+            <![CDATA[ balance > #{balance} ]]>
+    </select>
+
+    <select id="findExt" resultMap="customer">
+        SELECT * FROM customers
+        <where>
+            <if test="name != null">
+                <bind name="pattern" value="'%' + name + '%'" />
+                name LIKE #{pattern} 
+            </if>
+            <if test="ids.length > 0">
+                AND id IN 
+                <foreach item="id" collection="ids" open="(" separator="," close=")">
+                    #{id}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+</mapper>
