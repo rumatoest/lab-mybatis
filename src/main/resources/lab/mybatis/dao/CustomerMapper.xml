@@ -28,6 +28,10 @@
             balance = #{balance}
         WHERE id = #{id}
     </update>
+    
+    <update id="updateId">
+        UPDATE customers SET id = #{to} WHERE id = #{from}
+    </update>
 
         
     
@@ -56,11 +60,11 @@
     
     
     <resultMap id="customerExt" type="lab.mybatis.domain.CustomerExt" extends="customer" autoMapping="true">
-        <collection property="links" ofType="lab.mybatis.domain.Link" columnPrefix="link_" autoMapping="true">
+        <collection property="links" ofType="lab.mybatis.domain.Link" columnPrefix="link_"  autoMapping="true">
             <!-- Without ID there will be only one link -->
             <!-- mind prefix -->
             <id property="id" column="id" />
-            <result property="customerId" column="customer_id"/>
+            <!--<result property="customerId"    column="customer_id"/>-->
         </collection>
     </resultMap>
     

@@ -9,10 +9,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.ImportResource;
+import org.springframework.core.io.ClassPathResource;
 
 @SpringBootApplication
-//@ImportResource({"classpath:applicationContext.xml"})
 @ComponentScan(basePackages = "lab.mybatis")
 @MapperScan("lab.mybatis.dao")
 public class Application {
@@ -23,7 +22,9 @@ public class Application {
     @Bean
     public SqlSessionFactory sqlSessionFactory() throws Exception {
         SqlSessionFactoryBean sessionFactory = new SqlSessionFactoryBean();
+        sessionFactory.setConfigLocation(new ClassPathResource("mybatis-configuration.xml"));
         sessionFactory.setDataSource(dataSource);
+        
         return sessionFactory.getObject();
     }
 

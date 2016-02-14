@@ -24,4 +24,6 @@ public interface CustomerMapper {
     int insert(Customer cust);
 
     int update(Customer customer);
+
+    void updateId(@Param("from") long id, @Param("to") long newId);
 }

@@ -11,7 +11,10 @@
             #{url}
         )   
     </insert>
-
+    
+    <update id="updateOwner">
+        UPDATE customers SET customer_id = #{to} WHERE customer_id = #{from}
+    </update>
 
         
     <resultMap id="link" type="lab.mybatis.domain.Link" autoMapping="true">
