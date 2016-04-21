@@ -19,8 +19,7 @@
     </insert>
 
     <update id="update">
-        UPDATE customers 
-        SET 
+        UPDATE customers SET 
             enabled = #{enabled},
             login = #{login},
             name = #{name},
@@ -53,6 +52,10 @@
     <resultMap id="customer" type="lab.mybatis.domain.Customer" extends="customerBase" autoMapping="true">
     </resultMap>
     
+    <select id="findAll" resultMap="customer">
+        SELECT * FROM customers
+    </select>
+
     <select id="get" resultMap="customer">
         SELECT * FROM customers WHERE id = #{id}
     </select>
@@ -75,7 +78,7 @@
             l.customer_id link_customer_id, 
             l.url link_url 
         FROM customers c
-        LEFT JOIN links l ON l.customer_id = c.id
+            LEFT JOIN links l ON l.customer_id = c.id
         WHERE c.id = #{id}
     </select>
     
@@ -98,7 +101,7 @@
             l.customer_id link_customer_id, 
             l.url link_url 
         FROM customers c
-        LEFT JOIN links l ON l.customer_id = c.id
+            LEFT JOIN links l ON l.customer_id = c.id
         WHERE c.id = #{id}
     </select>
 
@@ -107,10 +110,10 @@
     <select id="find" resultMap="customer">
         SELECT * FROM customers
         WHERE
-            <if test="email != null">
-                <bind name="emailp" value="'%' + email + '%'" />
-                email LIKE #{emailp} AND
-            </if>
+        <if test="email != null">
+            <bind name="emailp" value="'%' + email + '%'" />
+            email LIKE #{emailp} AND
+        </if>
             <![CDATA[ balance > #{balance} ]]>
     </select>
 
@@ -119,7 +122,7 @@
         <where>
             <if test="name != null">
                 <bind name="pattern" value="'%' + name + '%'" />
-                name LIKE #{pattern} 
+                upper(name) LIKE upper(#{pattern})
             </if>
             <if test="ids.length > 0">
                 AND id IN 

@@ -2,11 +2,14 @@ package lab.mybatis.domain;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
 import java.io.IOException;
 import java.math.BigDecimal;
-import lombok.Data;
 
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class Customer extends CustomerBase {
 
     private String name;

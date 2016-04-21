@@ -15,7 +15,7 @@ CREATE TABLE links (
 );
 
 INSERT INTO customers (enabled, login, name, email, balance) 
-    VALUES (TRUE, 'tsar', 'Tsar Dadon', 'boss@dvorets.gov', 1000000);
+    VALUES (FALSE, 'tsar', 'Tsar Dadon', 'boss@dvorets.gov', 1000000);
 INSERT INTO customers (enabled, login, name, email, balance) 
     VALUES (FALSE, 'ivan', 'Ivan Durak', 'ivandurak@banat.com', -100);
 INSERT INTO customers (enabled, login, name, email, balance) 

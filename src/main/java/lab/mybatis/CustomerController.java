@@ -1,6 +1,7 @@
 package lab.mybatis;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 import lab.mybatis.dao.CustomerMapper;
 import lab.mybatis.domain.Customer;
@@ -26,6 +27,11 @@ public class CustomerController {
     @Autowired
     CustomerMapper cuMapper;
 
+    @RequestMapping("all")
+    public List<Customer> all() {
+        return cuMapper.findAll();
+    }
+
     @RequestMapping("get/{id:\\d+}")
     public Customer get(@PathVariable long id) {
         return cuMapper.get(id);
@@ -48,18 +54,19 @@ public class CustomerController {
 
     @RequestMapping("find")
     public List<Customer> find(
-        @RequestParam(name = "email", required = false) String email, 
-        @RequestParam("balance") double balance
+        @RequestParam("balance") double balance,
+        @RequestParam(name = "email", required = false) String email
     ) {
         return cuMapper.find(email, balance);
     }
 
     @RequestMapping("findExt")
     public List<Customer> findExt(
-        @RequestParam(name = "name", required = false) String name, 
-        @RequestParam("id") List<Long> ids
+        @RequestParam(name = "name", required = false) String name,
+        @RequestParam(name = "id", required = false) List<Long> ids
     ) {
-        return cuMapper.findExt(name, ids.toArray(new Long[0]));
+
+        return cuMapper.findExt(name, ids == null ? new Long[0] : ids.toArray(new Long[0]));
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)

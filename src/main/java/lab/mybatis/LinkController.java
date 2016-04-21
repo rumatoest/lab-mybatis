@@ -1,5 +1,6 @@
 package lab.mybatis;
 
+import java.util.List;
 import lab.mybatis.dao.LinkMapper;
 import lab.mybatis.domain.Link;
 import lab.mybatis.domain.LinkExt;
@@ -27,6 +28,10 @@ public class LinkController {
         return liMap.getExt(id);
     }
 
+    @RequestMapping("customer/{id:\\d+}")
+    public List<Link> customer(@PathVariable long id) {
+        return liMap.findByCustomer(id);
+    }
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public Link add(@RequestBody Link link) {
         liMap.insert(link);

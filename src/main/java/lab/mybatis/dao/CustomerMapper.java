@@ -9,6 +9,8 @@ import org.apache.ibatis.annotations.Param;
 
 public interface CustomerMapper {
 
+    List<Customer> findAll();
+
     Customer get(long id);
 
     CustomerBase getBase(long id);
