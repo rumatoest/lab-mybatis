@@ -1,9 +1,11 @@
 package lab.mybatis.dao;
 
-import java.util.List;
 import lab.mybatis.domain.Link;
 import lab.mybatis.domain.LinkExt;
+
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface LinkMapper {
 

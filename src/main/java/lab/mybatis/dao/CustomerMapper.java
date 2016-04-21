@@ -1,11 +1,13 @@
 package lab.mybatis.dao;
 
-import java.util.List;
 import lab.mybatis.domain.Customer;
 import lab.mybatis.domain.CustomerBase;
 import lab.mybatis.domain.CustomerExt;
 import lab.mybatis.domain.CustomerExtExt;
+
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface CustomerMapper {
 

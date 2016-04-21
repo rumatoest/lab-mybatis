@@ -2,6 +2,7 @@ package lab.mybatis;
 
 import lab.mybatis.dao.CustomerMapper;
 import lab.mybatis.dao.LinkMapper;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;

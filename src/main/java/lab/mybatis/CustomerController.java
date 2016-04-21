@@ -1,13 +1,11 @@
 package lab.mybatis;
 
-import java.io.IOException;
-import java.util.Collections;
-import java.util.List;
 import lab.mybatis.dao.CustomerMapper;
 import lab.mybatis.domain.Customer;
 import lab.mybatis.domain.CustomerBase;
 import lab.mybatis.domain.CustomerExt;
 import lab.mybatis.domain.CustomerExtExt;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/customer")
